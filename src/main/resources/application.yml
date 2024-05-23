@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hotel_booking
+    username: postgres
+    password: postgres
+    hikari:
+      schema: public
+      connection-ini-sql: CREATE SCHEMA IF NOT EXISTS public
+      connection-timeout: 10000
