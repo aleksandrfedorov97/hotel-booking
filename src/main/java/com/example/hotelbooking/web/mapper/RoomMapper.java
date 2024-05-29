@@ -11,6 +11,6 @@ import org.mapstruct.ReportingPolicy;
 public interface RoomMapper {
     RoomResponse roomToRoomResponse(Room room);
     Room roomUpsertRequestToRoom(RoomUpsertRequest request);
-    @Mapping(source = "userId", target = "id")
+    @Mapping(source = "roomId", target = "id")
     Room roomUpsertRequestToRoom(Long roomId, RoomUpsertRequest request);
 }
