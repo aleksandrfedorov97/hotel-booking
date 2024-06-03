@@ -33,7 +33,6 @@ public class Hotel {
     private String distanceFromCenter;
     private String rating;
     private Integer numberOfRatings;
-    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Builder.Default
+    @OneToMany(mappedBy = "hotel")
     private List<Room> rooms = new ArrayList<>();
 }
