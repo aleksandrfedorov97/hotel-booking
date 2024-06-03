@@ -32,7 +32,7 @@ public class HotelController {
 
     @PostMapping
     public ResponseEntity<HotelResponse> create(@RequestBody HotelUpsertRequest request) {
-        Hotel createdHotel = hotelService.create(hotelMapper.hotelUpsertRequestToHotel(request));
+        Hotel createdHotel = hotelService.create(request);
 
         return ResponseEntity.ok(
                 hotelMapper.hotelToHotelResponse(createdHotel)
@@ -41,7 +41,7 @@ public class HotelController {
 
     @PutMapping("/{id}")
     public ResponseEntity<HotelResponse> update(@PathVariable Long id, @RequestBody HotelUpsertRequest request) {
-        Hotel updatedHotel = hotelService.update(hotelMapper.hotelUpsertRequestToHotel(id, request));
+        Hotel updatedHotel = hotelService.update(id, request);
 
         return ResponseEntity.ok(
                 hotelMapper.hotelToHotelResponse(updatedHotel)

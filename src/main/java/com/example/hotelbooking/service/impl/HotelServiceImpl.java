@@ -3,6 +3,9 @@ package com.example.hotelbooking.service.impl;
 import com.example.hotelbooking.entity.Hotel;
 import com.example.hotelbooking.exception.HotelNotFoundException;
 import com.example.hotelbooking.repository.HotelRepository;
+import com.example.hotelbooking.service.HotelService;
+import com.example.hotelbooking.web.dto.hotel.HotelUpsertRequest;
+import com.example.hotelbooking.web.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -12,8 +15,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class HotelServiceImpl {
-
+public class HotelServiceImpl implements HotelService {
+    private final HotelMapper hotelMapper;
     private final HotelRepository hotelRepository;
 
     public List<Hotel> findAll() {
@@ -25,11 +28,15 @@ public class HotelServiceImpl {
                 .orElseThrow(() -> new HotelNotFoundException(id));
     }
 
-    public Hotel create(Hotel hotel) {
+    public Hotel create(HotelUpsertRequest request) {
+        Hotel hotel = hotelMapper.hotelUpsertRequestToHotel(request);
+
         return hotelRepository.save(hotel);
     }
 
-    public Hotel update(Hotel hotel) {
+    public Hotel update(Long id, HotelUpsertRequest request) {
+        Hotel hotel = hotelMapper.hotelUpsertRequestToHotel(id, request);
+
         Hotel existedHotel = findById(hotel.getId());
 
         if (StringUtils.hasText(hotel.getName())) {
