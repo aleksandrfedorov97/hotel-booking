@@ -42,7 +42,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody @Valid UserUpsertRequest request) {
-        User createdUser = userService.create(userMapper.userUpsertRequestToUser(request));
+        User createdUser = userService.create(request);
 
         return ResponseEntity.ok(
                 userMapper.userToUserResponse(createdUser)
@@ -51,7 +51,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody @Valid UserUpsertRequest request) {
-        User updatedUser = userService.update(userMapper.userUpsertRequestToUser(id, request));
+        User updatedUser = userService.update(id, request);
 
         return ResponseEntity.ok(
                 userMapper.userToUserResponse(updatedUser)

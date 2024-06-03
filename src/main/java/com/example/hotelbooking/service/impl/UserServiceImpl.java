@@ -5,6 +5,8 @@ import com.example.hotelbooking.exception.UserAlreadyExistsException;
 import com.example.hotelbooking.exception.UserNotFoundException;
 import com.example.hotelbooking.repository.UserRepository;
 import com.example.hotelbooking.service.UserService;
+import com.example.hotelbooking.web.dto.user.UserUpsertRequest;
+import com.example.hotelbooking.web.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,6 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final UserMapper userMapper;
     private final UserRepository userRepository;
 
     public List<User> findAll() {
@@ -38,7 +41,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsername(email);
     }
 
-    public User create(User user) {
+    public User create(UserUpsertRequest request) {
+        User user = userMapper.userUpsertRequestToUser(request);
+
         if (existsByUsername(user.getUsername())) {
             throw new UserAlreadyExistsException("username", user.getUsername());
         }
@@ -50,7 +55,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    public User update(User user) {
+    public User update(Long id, UserUpsertRequest request) {
+        User user = userMapper.userUpsertRequestToUser(id, request);
+
         User existedUser = findById(user.getId());
 
         if (StringUtils.hasText(user.getUsername())) {
