@@ -13,4 +13,5 @@ public class RoomUpsertRequest {
     private String number;
     private Long price;
     private Integer capacity;
+    private Long hotelId;
 }
