@@ -33,7 +33,7 @@ public class RoomController {
 
     @PostMapping
     public ResponseEntity<RoomResponse> create(@RequestBody @Valid RoomUpsertRequest request) {
-        Room createdRoom = roomService.create(roomMapper.roomUpsertRequestToRoom(request));
+        Room createdRoom = roomService.create(request);
 
         return ResponseEntity.ok(
                 roomMapper.roomToRoomResponse(createdRoom)
@@ -42,7 +42,7 @@ public class RoomController {
 
     @PutMapping("/{id}")
     public ResponseEntity<RoomResponse> update(@PathVariable Long id, @RequestBody @Valid RoomUpsertRequest request) {
-        Room createdRoom = roomService.update(roomMapper.roomUpsertRequestToRoom(id, request));
+        Room createdRoom = roomService.update(id, request);
 
         return ResponseEntity.ok(
                 roomMapper.roomToRoomResponse(createdRoom)
