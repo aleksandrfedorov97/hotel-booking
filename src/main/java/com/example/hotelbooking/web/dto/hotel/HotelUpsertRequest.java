@@ -8,4 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class HotelUpsertRequest {
+    private String name;
+    private String title;
+    private String city;
+    private String address;
+    private String distanceFromCenter;
 }
