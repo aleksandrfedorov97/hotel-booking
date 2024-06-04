@@ -1,5 +1,6 @@
 package com.example.hotelbooking.web.controller;
 
+import com.example.hotelbooking.exception.RoomNotFoundException;
 import com.example.hotelbooking.exception.UserAlreadyExistsException;
 import com.example.hotelbooking.exception.UserNotFoundException;
 import com.example.hotelbooking.web.dto.error.ErrorResponse;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -25,6 +25,12 @@ public class ExceptionHandlerController {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> entityNotFound(UserAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<ErrorResponse> entityNotFound(RoomNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(e.getLocalizedMessage()));
     }
 
