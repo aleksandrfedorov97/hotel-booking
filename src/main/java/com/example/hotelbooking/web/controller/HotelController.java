@@ -7,6 +7,7 @@ import com.example.hotelbooking.web.dto.hotel.HotelUpsertRequest;
 import com.example.hotelbooking.web.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class HotelController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HotelResponse> create(@RequestBody HotelUpsertRequest request) {
         Hotel createdHotel = hotelService.create(request);
 
@@ -40,6 +42,7 @@ public class HotelController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HotelResponse> update(@PathVariable Long id, @RequestBody HotelUpsertRequest request) {
         Hotel updatedHotel = hotelService.update(id, request);
 
@@ -49,6 +52,7 @@ public class HotelController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         hotelService.deleteById(id);
 

@@ -9,6 +9,7 @@ import com.example.hotelbooking.web.dto.booking.BookingUpsertRequest;
 import com.example.hotelbooking.web.mapper.BookingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class BookingController {
     private final BookingMapper bookingMapper;
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<BookingListResponse> findAll() {
         return ResponseEntity.ok(
                 bookingMapper.bookingListToBookingListResponse(bookingService.findAll())
