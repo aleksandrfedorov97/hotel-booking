@@ -8,6 +8,7 @@ import com.example.hotelbooking.service.UserService;
 import com.example.hotelbooking.web.dto.user.UserUpsertRequest;
 import com.example.hotelbooking.web.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +19,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -52,6 +54,8 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException("email", user.getEmail());
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userRepository.save(user);
     }
 
@@ -69,7 +73,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (StringUtils.hasText(user.getPassword())) {
-            existedUser.setPassword(user.getPassword());
+            existedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
         if (StringUtils.hasText(user.getEmail())) {
