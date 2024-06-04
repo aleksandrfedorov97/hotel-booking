@@ -1,5 +1,7 @@
 package com.example.hotelbooking.web.controller;
 
+import com.example.hotelbooking.exception.BookingDateAlreadyLockingException;
+import com.example.hotelbooking.exception.BookingNotFoundException;
 import com.example.hotelbooking.exception.HotelNotFoundException;
 import com.example.hotelbooking.exception.RoomNotFoundException;
 import com.example.hotelbooking.exception.UserAlreadyExistsException;
@@ -37,6 +39,18 @@ public class ExceptionHandlerController {
     @ExceptionHandler(HotelNotFoundException.class)
     public ResponseEntity<ErrorResponse> entityNotFound(HotelNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity<ErrorResponse> entityNotFound(BookingNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(BookingDateAlreadyLockingException.class)
+    public ResponseEntity<ErrorResponse> alreadyLocked(BookingDateAlreadyLockingException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(e.getLocalizedMessage()));
     }
 
