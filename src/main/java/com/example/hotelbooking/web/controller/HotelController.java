@@ -2,10 +2,13 @@ package com.example.hotelbooking.web.controller;
 
 import com.example.hotelbooking.entity.Hotel;
 import com.example.hotelbooking.service.HotelService;
+import com.example.hotelbooking.web.dto.hotel.HotelFilter;
+import com.example.hotelbooking.web.dto.hotel.HotelListResponse;
 import com.example.hotelbooking.web.dto.hotel.HotelResponse;
 import com.example.hotelbooking.web.dto.hotel.HotelUpsertRatingRequest;
 import com.example.hotelbooking.web.dto.hotel.HotelUpsertRequest;
 import com.example.hotelbooking.web.mapper.HotelMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class HotelController {
     private final HotelService hotelService;
     private final HotelMapper hotelMapper;
+
+    @GetMapping
+    public ResponseEntity<HotelListResponse> findAll(@Valid HotelFilter hotelFilter) {
+        return ResponseEntity.ok(
+                hotelMapper.hotelListToHotelListResponse(hotelService.filterBy(hotelFilter))
+        );
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<HotelResponse> findById(@PathVariable Long id) {

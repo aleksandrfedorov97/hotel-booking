@@ -12,5 +12,5 @@ public class HotelUpsertRequest {
     private String title;
     private String city;
     private String address;
-    private String distanceFromCenter;
+    private Integer distanceFromCenter;
 }

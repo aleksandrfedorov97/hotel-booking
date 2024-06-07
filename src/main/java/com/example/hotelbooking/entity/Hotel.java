@@ -29,7 +29,7 @@ public class Hotel {
     private String title;
     private String city;
     private String address;
-    private String distanceFromCenter;
+    private Integer distanceFromCenter;
     @Column(precision = 10, scale = 2)
     private BigDecimal rating = new BigDecimal(0.0);
     private Integer numberOfRating = 0;

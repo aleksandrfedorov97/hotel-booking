@@ -3,10 +3,13 @@ package com.example.hotelbooking.service.impl;
 import com.example.hotelbooking.entity.Hotel;
 import com.example.hotelbooking.exception.HotelNotFoundException;
 import com.example.hotelbooking.repository.HotelRepository;
+import com.example.hotelbooking.repository.HotelSpecification;
 import com.example.hotelbooking.service.HotelService;
+import com.example.hotelbooking.web.dto.hotel.HotelFilter;
 import com.example.hotelbooking.web.dto.hotel.HotelUpsertRequest;
 import com.example.hotelbooking.web.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +26,13 @@ public class HotelServiceImpl implements HotelService {
 
     public List<Hotel> findAll() {
         return hotelRepository.findAll();
+    }
+
+    public List<Hotel> filterBy(HotelFilter hotelFilter) {
+        return hotelRepository.findAll(
+                HotelSpecification.withFilter(hotelFilter),
+                PageRequest.of(hotelFilter.getPageNumber(), hotelFilter.getPageSize())
+        ).getContent();
     }
 
     public Hotel findById(Long id) {
@@ -57,7 +67,7 @@ public class HotelServiceImpl implements HotelService {
             existedHotel.setAddress(hotel.getAddress());
         }
 
-        if (StringUtils.hasText(hotel.getDistanceFromCenter())) {
+        if (hotel.getDistanceFromCenter() != null) {
             existedHotel.setDistanceFromCenter(hotel.getDistanceFromCenter());
         }
 
