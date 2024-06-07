@@ -3,6 +3,7 @@ package com.example.hotelbooking.web.controller;
 import com.example.hotelbooking.entity.Hotel;
 import com.example.hotelbooking.service.HotelService;
 import com.example.hotelbooking.web.dto.hotel.HotelResponse;
+import com.example.hotelbooking.web.dto.hotel.HotelUpsertRatingRequest;
 import com.example.hotelbooking.web.dto.hotel.HotelUpsertRequest;
 import com.example.hotelbooking.web.mapper.HotelMapper;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,15 @@ public class HotelController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HotelResponse> update(@PathVariable Long id, @RequestBody HotelUpsertRequest request) {
         Hotel updatedHotel = hotelService.update(id, request);
+
+        return ResponseEntity.ok(
+                hotelMapper.hotelToHotelResponse(updatedHotel)
+        );
+    }
+
+    @PostMapping("/{id}/rating")
+    public ResponseEntity<HotelResponse> update(@PathVariable Long id, @RequestBody HotelUpsertRatingRequest request) {
+        Hotel updatedHotel = hotelService.updateRating(id, request.getMark());
 
         return ResponseEntity.ok(
                 hotelMapper.hotelToHotelResponse(updatedHotel)

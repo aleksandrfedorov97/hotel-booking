@@ -11,5 +11,6 @@ public interface HotelService {
     Hotel findById(Long id);
     Hotel create(HotelUpsertRequest request);
     Hotel update(Long id, HotelUpsertRequest request);
+    Hotel updateRating(Long id, Integer mark);
     void deleteById(Long id);
 }

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.RoundingMode;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -59,15 +61,25 @@ public class HotelServiceImpl implements HotelService {
             existedHotel.setDistanceFromCenter(hotel.getDistanceFromCenter());
         }
 
-        if (StringUtils.hasText(hotel.getRating())) {
-            existedHotel.setRating(hotel.getRating());
-        }
-
-        if (hotel.getNumberOfRatings() != null) {
-            existedHotel.setNumberOfRatings(hotel.getNumberOfRatings());
-        }
-
         return hotelRepository.save(hotel);
+    }
+
+    public Hotel updateRating(Long id, Integer mark) {
+        Hotel existedHotel = findById(id);
+
+        BigDecimal rating = existedHotel.getRating();
+        Integer numberOfRating = existedHotel.getNumberOfRating();
+
+        BigDecimal totalRating = rating.multiply(BigDecimal.valueOf(numberOfRating));
+        totalRating = totalRating.add(BigDecimal.valueOf(mark));
+
+        Integer newNumberOfRating = numberOfRating + 1;
+        BigDecimal newRating = totalRating.divide(BigDecimal.valueOf(newNumberOfRating), 2, RoundingMode.HALF_UP);
+
+        existedHotel.setRating(newRating);
+        existedHotel.setNumberOfRating(newNumberOfRating);
+
+        return hotelRepository.save(existedHotel);
     }
 
     public void deleteById(Long id) {
